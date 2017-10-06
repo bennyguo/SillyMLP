@@ -99,3 +99,11 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# logs and plots
+*.png
+*.log
+
+# PyCharm and Mac
+.idea/
+.DS_Store
