@@ -27,7 +27,7 @@ def train_net(model, loss, config, inputs, labels, batch_size, disp_freq):
         # forward net
         output = model.forward(input)
         # calculate loss
-        loss_value = list(loss.forward(output, target))
+        loss_value = loss.forward(output, target)
         # generate gradient w.r.t loss
         grad = loss.backward(output, target)
         # backward gradient
@@ -37,8 +37,8 @@ def train_net(model, loss, config, inputs, labels, batch_size, disp_freq):
         model.update(config)
 
         acc_value = calculate_acc(output, label)
-        loss_list += loss_value
-        total_loss_list += loss_value
+        loss_list.append(loss_value)
+        total_loss_list.append(loss_value)
         acc_list.append(acc_value)
         total_acc_list.append(acc_value)
 
@@ -58,9 +58,9 @@ def test_net(model, loss, inputs, labels, batch_size):
     for input, label in data_iterator(inputs, labels, batch_size, shuffle=False):
         target = onehot_encoding(label, 10)
         output = model.forward(input)
-        loss_value = list(loss.forward(output, target))
+        loss_value = loss.forward(output, target)
         acc_value = calculate_acc(output, label)
-        loss_list += loss_value
+        loss_list.append(loss_value)
         acc_list.append(acc_value)
 
     return np.mean(loss_list), np.mean(acc_list)

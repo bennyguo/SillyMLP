@@ -72,8 +72,8 @@ class Linear(Layer):
         return input.dot(self.W) + self.b
 
     def backward(self, grad_output):
-        self.grad_W = np.mean(self._saved_tensor[:,:,None] * grad_output[:,None,:], 0)
-        self.grad_b = np.mean(grad_output, 0)
+        self.grad_W = np.sum(self._saved_tensor[:,:,None] * grad_output[:,None,:], 0)
+        self.grad_b = np.sum(grad_output, 0)
         return np.transpose(np.dot(self.W, np.transpose(grad_output)))
 
     def update(self, config):
