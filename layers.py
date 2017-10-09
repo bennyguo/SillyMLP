@@ -2,7 +2,7 @@ import numpy as np
 import math
 
 class Layer(object):
-    def __init__(self, name, trainable=False):
+    def __init__(self, name, trainable=True):
         self.name = name
         self.trainable = trainable
         self._saved_tensor = None
@@ -44,8 +44,8 @@ class Sigmoid(Layer):
         super(Sigmoid, self).__init__(name)
 
     def forward(self, input):
-        output = 1 / (1 + math.exp(-input))
-        self._saved_for_backward(output)
+        output = 1 / (1 + np.exp(-input))
+        self._saved_for_backward(np.copy(output))
         return output
 
     def backward(self, grad_output):
@@ -72,9 +72,9 @@ class Linear(Layer):
         return input.dot(self.W) + self.b
 
     def backward(self, grad_output):
-        self.grad_W = np.sum(self._saved_tensor[:,:,None] * grad_output[:,None,:], 0)
+        self.grad_W = np.dot(np.transpose(self._saved_tensor), grad_output)
         self.grad_b = np.sum(grad_output, 0)
-        return np.transpose(np.dot(self.W, np.transpose(grad_output)))
+        return np.dot(grad_output, np.transpose(self.W))
 
     def update(self, config):
         mm = config['momentum']
