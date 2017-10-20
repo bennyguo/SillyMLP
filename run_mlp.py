@@ -1,8 +1,7 @@
 from network import Network
 from utils import LOG_INFO, beautiful_dict
 from layers import Relu, Sigmoid, Linear
-# from loss import EuclideanLoss, SoftmaxCrossEntropyLoss
-from loss import EuclideanLoss
+from loss import EuclideanLoss, SoftmaxCrossEntropyLoss
 from solve_net import train_net, test_net
 from load_data import load_mnist_2d
 from scheduler import EmptyScheduler, StepScheduler
@@ -117,8 +116,9 @@ if __name__ == '__main__':
     # write model architecture to log file
     LOG_INFO('Model architecture:\r\n' + str(model) + '\r\n', time=False, to_file=log_file)
 
-    # use euclidean loss function
-    loss = EuclideanLoss(name='loss')
+    # use euclidean/cross entropy loss function
+    # loss = EuclideanLoss(name='loss')
+    loss = SoftmaxCrossEntropyLoss(name='loss')
     # Training configuration
     # You should adjust these hyperparameters
     # NOTE: one iteration means model forward-backwards one batch of samples.
